@@ -144,7 +144,7 @@ fi
 ###############################################################################
 SYSBENCH_VERSION=0.4.12.7
 SYSBENCH_DIR=sysbench-$SYSBENCH_VERSION
-SYSBENCH_THREADS_ITERS="1 2 4 8"
+SYSBENCH_THREADS_ITERS="1 2 4"
 if [ "$TESTON_sysbench" = "true" ] ; then
    require_download sysbench $SYSBENCH_DIR http://downloads.mysql.com/source/sysbench-$SYSBENCH_VERSION.tar.gz
 fi
@@ -363,10 +363,18 @@ else
    if [ -e sysbench/sysbench ] ; then
       echo " + running..."
       for th in $SYSBENCH_THREADS_ITERS ; do
-      sysbench/sysbench --test=threads --num-threads=\$th --thread-locks=1 --max-requests=262144 --max-time=600s run >> ../sb-output.log 2>&1
-      sysbench/sysbench --test=cpu --num-threads=\$th --cpu-max-prime=20000 --max-requests=524288 run >> ../sb-output.log 2>&1
-      sysbench/sysbench --test=mutex --num-threads=\$th --mutex-num=4 --mutex-locks=524288 --mutex-loops=0 run >> ../sb-output.log 2>&1
-      sysbench/sysbench --test=memory --num-threads=\$th run >> ../sb-output.log 2>&1
+         echo "### SYSBENCH:BEGIN test=threads num-threads=\$th" >> ../sb-output.log
+            sysbench/sysbench --test=threads --num-threads=\$th --thread-locks=1 --max-requests=262144 --max-time=600s run >> ../sb-output.log 2>&1
+         echo "### SYSBENCH:END test=threads num-threads=\$th" >> ../sb-output.log
+         echo "### SYSBENCH:BEGIN test=cpu num-threads=\$th" >> ../sb-output.log
+            sysbench/sysbench --test=cpu --num-threads=\$th --cpu-max-prime=20000 --max-requests=524288 run >> ../sb-output.log 2>&1
+         echo "### SYSBENCH:END test=cpu num-threads=\$th" >> ../sb-output.log
+         echo "### SYSBENCH:BEGIN test=mutex num-threads=\$th" >> ../sb-output.log
+            sysbench/sysbench --test=mutex --num-threads=\$th --mutex-num=4 --mutex-locks=524288 --mutex-loops=0 run >> ../sb-output.log 2>&1
+         echo "### SYSBENCH:END test=mutex num-threads=\$th" >> ../sb-output.log
+         echo "### SYSBENCH:BEGIN test=memory num-threads=\$th" >> ../sb-output.log
+           sysbench/sysbench --test=memory --num-threads=\$th run >> ../sb-output.log 2>&1
+         echo "### SYSBENCH:END test=memory num-threads=\$th" >> ../sb-output.log
       done
    fi
    cd ..
