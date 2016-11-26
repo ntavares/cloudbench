@@ -399,11 +399,10 @@ if [ "$RUN_IN_FOREGROUND" = "true" ] ; then
       $CMD
    fi
 else
-   CMD="nohup ./run-upload.sh >> sb-output.log 2>&1 & &> /dev/null"
    if [ "$DRY_RUN" = "true" ] ; then
-      echo "DRU_RUN.CMD: $CMD"
+      echo "DRY_RUN.CMD: nohup ./run-upload.sh >> sb-output.log 2>&1 & &> /dev/null"
    else
-      $CMD
+      nohup ./run-upload.sh >> sb-output.log 2>&1 & &> /dev/null
       echo $! > ~/.sb-pid
    fi
 fi
