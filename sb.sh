@@ -81,6 +81,8 @@ cd sb-bench
 requires_command 'gcc'
 requires_command 'make'
 requires_command 'curl'
+requires_command 'wget'
+requires_command 'which'
 
 if [ "`whoami`" != "root" ]; then
   SUDO='sudo'
