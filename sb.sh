@@ -37,6 +37,12 @@ IOMOUNTPOINT=.
 #
 DRY_RUN=false
 
+#
+# Execute only these tests with UnixBench. Leave empty to run the default ones
+# Example: UNIXBENCH_TESTS="dhry2reg whetstone-double fstime fsbuffer fsdisk"
+#
+UNIXBENCH_TESTS=""
+
 PID=`cat ~/.sb-pid 2>/dev/null`
 if [ -e "~/.sb-pid" ] && ps -p $PID >&- ; then
   echo "CloudBench job is already running (PID: $PID)"
@@ -349,7 +355,7 @@ if [ "\$TESTON_unixbench" != "true" ] ; then
 else
    echo "Running UnixBench benchmark..."
    cd $UNIX_BENCH_DIR
-   ./Run -c 1 -c `grep -c processor /proc/cpuinfo` >> ../sb-output.log 2>&1
+   ./Run -c 1 -c `grep -c processor /proc/cpuinfo` $UNIXBENCH_TESTS >> ../sb-output.log 2>&1
    cd ..
 fi
 
